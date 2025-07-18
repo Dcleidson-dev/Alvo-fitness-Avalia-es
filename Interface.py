@@ -84,7 +84,7 @@ def calcular_gasto(exercicios, tempo_total, sexo):
     return round(total, 2), detalhes
 
 #Função salvar treino com uso de arquivos com abertura no modo "a" para que os dados sejam salvos  em continuidade sem ser apagado na geração de outro relatorio, uso de estrutura de decisão for, salvando o arqeuivo com nome do aluno.
-def salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes):
+def salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes, meta_text):
     data = datetime.now().strftime("%Y-%m-%d")
     nome_padrao = padronizar_nome(nome)
     filename = f"{nome_padrao}.txt"
@@ -97,6 +97,7 @@ def salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes):
         for d in detalhes:
             f.write(f"- {d}\n")
         f.write(f"Gasto calórico total: {gasto} kcal\n")
+        f.write(meta_text + "\n")
         f.write("-" * 40 + "\n")
 
 #Funçao total_gasto com uso de arquivos com abertura no modo "r", uso de condicionais, salvando o arqeuivo com nome do aluno. 
@@ -286,7 +287,7 @@ class CadastroFrame(ttk.Frame):
 
         meta_text = estimar_meta(nome, objetivo, gasto, peso, altura)
 
-        salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes)
+        salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes, meta_text)
 
 # Mostrar resultado com uso da estrutura de repetição for 
         texto = (f"✅ IMC: {imc}\n"
