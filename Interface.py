@@ -97,7 +97,6 @@ def salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes, meta_te
         for d in detalhes:
             f.write(f"- {d}\n")
         f.write(f"Gasto calórico total: {gasto} kcal\n")
-        f.write(meta_text + "\n")
         f.write("-" * 40 + "\n")
 
 #Funçao total_gasto com uso de arquivos com abertura no modo "r", uso de condicionais, salvando o arqeuivo com nome do aluno. 
@@ -123,7 +122,7 @@ def contar_treinos(nome):
         return 0
 
     count = 0
-    with open(filename, "a", encoding="utf-8") as f:
+    with open(filename, "r", encoding="utf-8") as f:
         for linha in f:
             if "Gasto calórico total" in linha:
                 count += 1
@@ -285,9 +284,14 @@ class CadastroFrame(ttk.Frame):
         exercicios = exercicios_objetivo[objetivo]
         gasto, detalhes = calcular_gasto(exercicios, tempo, sexo)
 
+        salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes, "")
+
         meta_text = estimar_meta(nome, objetivo, gasto, peso, altura)
 
-        salvar_treino(nome, imc, situacao, objetivo, tempo, gasto, detalhes, meta_text)
+        nome_padrao = padronizar_nome(nome)
+        filename = f"{nome_padrao}.txt"
+        with open(filename, "a", encoding="utf-8") as f:
+            f.write(meta_text + "\n") 
 
 # Mostrar resultado com uso da estrutura de repetição for 
         texto = (f"✅ IMC: {imc}\n"
